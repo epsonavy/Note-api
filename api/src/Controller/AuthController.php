@@ -27,6 +27,10 @@ class AuthController extends ApiController
             return $this->respondValidationError("Invalid Email or Password");
         }
 
+        if (strlen($password)< 8) {
+            return $this->respondValidationError("Password must at least 8 characters");
+        }
+
         $user = new User($email);
         $user->setPassword($encoder->encodePassword($user, $password));
         $em->persist($user);
