@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  *
@@ -25,6 +26,8 @@ class Note
      * @var string The title of the note.
      *
      * @ORM\Column(type="text", length=50)
+     * @Assert\NotBlank
+     * @Assert\Range(max=50)
      */
     public $title;
 
@@ -32,6 +35,7 @@ class Note
      * @var string The content of the note.
      *
      * @ORM\Column(type="text", length=1000)
+     * @Assert\Range(max=1000)
      */
     public $content;
 
