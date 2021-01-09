@@ -1,12 +1,12 @@
 The simple Rest API application example build on [Api-platform](https://api-platform.com/) and [Symfony](https://symfony.com/) framework.
 
 ## Installation
-### 1. Clone repository
+### 1. Clone repository (Download zip file won't work)
 ```bash
 git clone https://github.com/epsonavy/Note-api.git
 ```
 ### 2. Dependencies installation
-Make sure you have docker in your machine, you can download from https://www.docker.com/
+Make sure you have docker in your machine, you can download from https://www.docker.com/ .
 Pull docker image and install project dependencies by using the following command in the project folder
 ```bash
 cd Note-api
@@ -89,8 +89,6 @@ copy above token and replace following <token>, same as all other curl cmd.
 ```bash
 curl -X POST "https://localhost/notes" -H  "accept: application/ld+json" -H  "Content-Type: application/json" -H "Authorization: Bearer <token>" -d "{\"title\":\"mynote\",\"content\":\"something\",\"updatedAt\":\"2021-01-08T21:02:25.745Z\",\"createdAt\":\"2021-01-08T21:02:25.745Z\"}" -k
 ```
-
-// create another note use same above.
 
 Use token to see note
 ```bash
