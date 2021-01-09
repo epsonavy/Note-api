@@ -6,6 +6,7 @@ The simple Rest API application example build on [Api-platform](https://api-plat
 git clone https://github.com/epsonavy/Note-api.git
 ```
 ### 2. Dependencies installation
+Make sure you have docker in your machine, you can download from https://www.docker.com/
 Pull docker image and install project dependencies by using the following command in the project folder
 ```bash
 docker-compose pull
