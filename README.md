@@ -17,7 +17,11 @@ Run
 ```bash
 docker-compose exec php bin/console doctrine:schema:update --force
 ```
-### 4. Generate the public and private keys used for signing JWT tokens
+## You are all set!!!
+
+
+### Other commands:
+#### Generate the public and private keys used for signing JWT tokens (already add this in docker-entrypoint.sh file )
 ```bash
 docker-compose exec php sh -c '
     set -e
