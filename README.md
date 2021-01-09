@@ -59,27 +59,27 @@ docker exec -it note-api_database_1 psql -U api-platform -d api
 ## use -k flag to ignore invalid and self signed ssl connection errors 
 or Install self signed certificate in Chrome
 
-// register a new user
+Register a new user
 ```bash
 curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test@note.com","password":"12345678"}' -k
 ```
 
-// register second new user
+Register second new user
 ```bash
 curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test2@note.com","password":"12345678"}' -k
 ```
 
-// You will get Error: password need at least 8 characters
+You will get Error: password need at least 8 characters
 ```bash
 curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test3@test.com","password":"123456"}' -k
 ```
 
-// get token
+Get token
 ```bash
 curl -X POST -H "Content-Type: application/json" https://localhost/authentication_token -d '{"username":"test@note.com","password":"123456"}' -k
 ```
 
-// use token to create note
+Use token to create note
 copy above token and replace following <token>, same as all other curl cmd.
 ```bash
 curl -X POST "https://localhost/notes" -H  "accept: application/ld+json" -H  "Content-Type: application/json" -H "Authorization: Bearer <token>" -d "{\"title\":\"mynote\",\"content\":\"something\",\"updatedAt\":\"2021-01-08T21:02:25.745Z\",\"createdAt\":\"2021-01-08T21:02:25.745Z\"}" -k
@@ -87,27 +87,27 @@ curl -X POST "https://localhost/notes" -H  "accept: application/ld+json" -H  "Co
 
 // create another note use same above.
 
-// use token to see note
+Use token to see note
 ```bash
-curl -X GET "https://localhost/notes/2" -H  "accept: application/ld+json" -H "Authorization: Bearer <token>" -k
+curl -X GET "https://localhost/notes/1" -H  "accept: application/ld+json" -H "Authorization: Bearer <token>" -k
 ```
 
-// test Put with token
+Test Put with token
 ```bash
 curl -X PUT "https://localhost/notes/1" -H  "accept: application/ld+json" -H  "Content-Type: application/json" -d "{\"title\":\"updated\",\"content\":\"updated\",\"updatedAt\":\"2021-01-08T22:43:41.483Z\",\"createdAt\":\"2021-01-08T22:43:41.483Z\"}" -H "Authorization: Bearer <token>" -k
 ```
 
-// test Patch with token
+Test Patch with token
 ```bash
 curl -X PATCH "https://localhost/notes/1" -H  "accept: application/ld+json" -H  "Content-Type: application/merge-patch+json" -d "{\"title\":\"patched\",\"content\":\"patched\",\"updatedAt\":\"2021-01-08T22:47:14.117Z\",\"createdAt\":\"2021-01-08T22:47:14.117Z\"}" -H "Authorization: Bearer <token>" -k
 ```
 
-// test delete with token
+Test delete with token
 ```bash
 curl -X DELETE "https://localhost/notes/1" -H  "accept: */*" -H "Authorization: Bearer <token>" -k
 ```
 
-// check note 1 if not exist
+Check note 1 if not exist
 ```bash
 curl -X GET "https://localhost/notes/1" -H  "accept: application/ld+json" -H "Authorization: Bearer <token>" -k
 ```
