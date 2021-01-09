@@ -1,0 +1,17 @@
+App\Entity\Note:
+    attributes:
+        security: 'is_granted("ROLE_USER")'
+    collectionOperations:
+        post:
+            method: 'POST'
+            security: 'is_granted("ROLE_USER") and object.owner == user'
+            security_message: 'Only owner can add notes.'
+    itemOperations:
+        get:
+            method: 'GET'
+            security: 'is_granted("ROLE_USER") and object.owner == user'
+            security_message: 'Sorry, but you are not the note owner.'
+        put:
+            method: 'PUT'
+            security_post_denormalize: "is_granted("ROLE_USER") and object.owner == user and previous_object.owner == user"
+            security_post_denormalize_message: 'Sorry, but you are not the actual note owner.'

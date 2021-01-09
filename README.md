@@ -1,24 +1,24 @@
+The simple Rest API application example build on [Api-platform](https://api-platform.com/) and [Symfony](https://symfony.com/) framework.
+
+## Installation
+### 1. Clone repository
+```bash
+git clone https://github.com/epsonavy/Note-api.git
+```
+### 2. Dependencies installation
+Pull docker image and install project dependencies by using the following command in the project folder
+```bash
 docker-compose pull
 docker-compose up -d
-
+```
+### 3. Create necessary database structure.
+Run 
+```bash
 docker-compose exec php bin/console doctrine:schema:update --force
-docker-compose exec php bin/console debug:router
-docker-compose exec php bin/console cache:clear
-
-docker-compose pull && docker-compose up --build --force-recreate
-
-docker-compose up -d
-
-docker exec -it <container-id> psql -U <username> -d postgres -c "DROP DATABASE <dbname>;"
-
-docker exec -it note-api_database_1  psql -U api-platform -l
-docker exec -it note-api_database_1  psql -U api-platform -d api
-
-docker exec -it note-api_database_1 psql -U api-platform -d api
-
-INSERT INTO "user" VALUES (1,’test@test.com', '123456');
-
-$ docker-compose exec php sh -c '
+```
+### 4. Generate the public and private keys used for signing JWT tokens
+```bash
+docker-compose exec php sh -c '
     set -e
     apk add openssl
     mkdir -p config/jwt
@@ -28,24 +28,86 @@ $ docker-compose exec php sh -c '
     setfacl -R -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
     setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
 '
+```
 
-// use -k parameter or Install self signed certificate in Chrome
-curl -X GET https://localhost/notes/1 -k
+### Docker command
+Debug route:
+```bash
+docker-compose exec php bin/console debug:router
+```
+Clear cache:
+```bash
+docker-compose exec php bin/console cache:clear
+```
+Rebuild docker env
+```bash
+docker-compose pull && docker-compose up --build --force-recreate
+````
 
-// register
-curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test@test.com","password":"12345678"}' -k
+### Postgres
+How to run postgres query in docker:
+```bash
+docker exec -it <container-id> psql -U <username> -d postgres -c "DROP DATABASE <dbname>;"
+```
+How to enter postgres cli:
+```bash
+docker exec -it note-api_database_1 psql -U api-platform -d api
+```
 
-// duplicate
-curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test@test.com","password":"12345678"}' -k
+### cURL commands to test the APIs
 
-// password need at least 8 characters
-curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test2@test.com","password":"123456"}' -k
+## use -k flag to ignore invalid and self signed ssl connection errors 
+or Install self signed certificate in Chrome
+
+// register a new user
+```bash
+curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test@note.com","password":"12345678"}' -k
+```
+
+// register second new user
+```bash
+curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test2@note.com","password":"12345678"}' -k
+```
+
+// You will get Error: password need at least 8 characters
+```bash
+curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test3@test.com","password":"123456"}' -k
+```
 
 // get token
-curl -X POST -H "Content-Type: application/json" https://localhost/authentication_token -d '{"username":"test@test.com","password":"123456"}' -k
+```bash
+curl -X POST -H "Content-Type: application/json" https://localhost/authentication_token -d '{"username":"test@note.com","password":"123456"}' -k
+```
 
 // use token to create note
-curl -X POST "https://localhost/notes" -H  "accept: application/ld+json" -H  "Content-Type: application/json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2MTAxMzc4NTMsImV4cCI6MTYxMDE0MTQ1Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdEB0ZXN0LmNvbSJ9.mU6cUcFWvhI4oCd0cKh9l1nxvmsWkKxyFRErDTf6geiqr7dFW54vMH2gZMB9KbyREOt0DE9WKY6bsD-OsEWeZ7cMZMctfD1fA6HPr5f7rZDENmgH94mBnu0z1NcEsgBRWeA8vtedX5Fh02RrbgJZwfffFICrwYIUziw2-5KVkP6TWrswQ83uyZMr1x_1L8qx_4-wT-2R96uBgYVSpRiBouh4LsRulSm0rH31_QhngQT5tsNbE46LC1w6f8HrgyGi1M-ZHJYRDH3zVQzxMaNMIwWY1wsmkJZDW_CQMBpRoLbJ82WHuA8n4JZG37K_Ptzu9V12qflbJPEjYnhmIE-6kKylU33wVWdynCMspaeMg-FRk4H9bxEthupsVl7wDvDLuG8I8o8RN3Pc6o59Pwsuj_kXaehtStTmiwE0XZ4JY9WMUbZIFVqWv9BCEOGzNkSzlbLnVXyer4Si9TbjyP-T6X7mnFe3mdDZMdnXEnY6N9fuNKQHuvkPWq2SrVd2Re8Z5pAkZyUh_1wcBUqSLYG50Sg1Yv3dAr2-FtgihDz32R-RzCdYPDiqiRdwpAjLlMhVQw-sStmbhVCuWbxnuCM2ZBfwWTnrdlg4gH93GxrKfHMGiGT-emfippbs5y0FNhiypoM_t4wsXp-w8rjFm6HTK0JytK7645tGBq7u5s_pm0I" -d "{\"title\":\"mynote\",\"content\":\"something\",\"updatedAt\":\"2021-01-08T21:02:25.745Z\",\"createdAt\":\"2021-01-08T21:02:25.745Z\"}" -k
+copy above token and replace following <token>, same as all other curl cmd.
+```bash
+curl -X POST "https://localhost/notes" -H  "accept: application/ld+json" -H  "Content-Type: application/json" -H "Authorization: Bearer <token>" -d "{\"title\":\"mynote\",\"content\":\"something\",\"updatedAt\":\"2021-01-08T21:02:25.745Z\",\"createdAt\":\"2021-01-08T21:02:25.745Z\"}" -k
+```
 
-// user token to see note
-curl -X GET "https://localhost/notes/2" -H  "accept: application/ld+json" -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2MTAxMzc4NTMsImV4cCI6MTYxMDE0MTQ1Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdEB0ZXN0LmNvbSJ9.mU6cUcFWvhI4oCd0cKh9l1nxvmsWkKxyFRErDTf6geiqr7dFW54vMH2gZMB9KbyREOt0DE9WKY6bsD-OsEWeZ7cMZMctfD1fA6HPr5f7rZDENmgH94mBnu0z1NcEsgBRWeA8vtedX5Fh02RrbgJZwfffFICrwYIUziw2-5KVkP6TWrswQ83uyZMr1x_1L8qx_4-wT-2R96uBgYVSpRiBouh4LsRulSm0rH31_QhngQT5tsNbE46LC1w6f8HrgyGi1M-ZHJYRDH3zVQzxMaNMIwWY1wsmkJZDW_CQMBpRoLbJ82WHuA8n4JZG37K_Ptzu9V12qflbJPEjYnhmIE-6kKylU33wVWdynCMspaeMg-FRk4H9bxEthupsVl7wDvDLuG8I8o8RN3Pc6o59Pwsuj_kXaehtStTmiwE0XZ4JY9WMUbZIFVqWv9BCEOGzNkSzlbLnVXyer4Si9TbjyP-T6X7mnFe3mdDZMdnXEnY6N9fuNKQHuvkPWq2SrVd2Re8Z5pAkZyUh_1wcBUqSLYG50Sg1Yv3dAr2-FtgihDz32R-RzCdYPDiqiRdwpAjLlMhVQw-sStmbhVCuWbxnuCM2ZBfwWTnrdlg4gH93GxrKfHMGiGT-emfippbs5y0FNhiypoM_t4wsXp-w8rjFm6HTK0JytK7645tGBq7u5s_pm0I" -k
+// create another note use same above.
+
+// use token to see note
+```bash
+curl -X GET "https://localhost/notes/2" -H  "accept: application/ld+json" -H "Authorization: Bearer <token>" -k
+```
+
+// test Put with token
+```bash
+curl -X PUT "https://localhost/notes/1" -H  "accept: application/ld+json" -H  "Content-Type: application/json" -d "{\"title\":\"updated\",\"content\":\"updated\",\"updatedAt\":\"2021-01-08T22:43:41.483Z\",\"createdAt\":\"2021-01-08T22:43:41.483Z\"}" -H "Authorization: Bearer <token>" -k
+```
+
+// test Patch with token
+```bash
+curl -X PATCH "https://localhost/notes/1" -H  "accept: application/ld+json" -H  "Content-Type: application/merge-patch+json" -d "{\"title\":\"patched\",\"content\":\"patched\",\"updatedAt\":\"2021-01-08T22:47:14.117Z\",\"createdAt\":\"2021-01-08T22:47:14.117Z\"}" -H "Authorization: Bearer <token>" -k
+```
+
+// test delete with token
+```bash
+curl -X DELETE "https://localhost/notes/1" -H  "accept: */*" -H "Authorization: Bearer <token>" -k
+```
+
+// check note 1 if not exist
+```bash
+curl -X GET "https://localhost/notes/1" -H  "accept: application/ld+json" -H "Authorization: Bearer <token>" -k
+```
