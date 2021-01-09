@@ -112,3 +112,7 @@ Check note 1 if not exist
 ```bash
 curl -X GET "https://localhost/notes/1" -H  "accept: application/ld+json" -H "Authorization: Bearer <token>" -k
 ```
+### Note API documentation
+```bash
+https://localhost/docs
+```
