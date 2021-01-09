@@ -9,19 +9,16 @@ git clone https://github.com/epsonavy/Note-api.git
 Make sure you have docker in your machine, you can download from https://www.docker.com/
 Pull docker image and install project dependencies by using the following command in the project folder
 ```bash
-docker-compose pull
-docker-compose up -d
+cd Note-api
+docker-compose pull && docker-compose up -d
 ```
 ### 3. Create necessary database structure.
 Run 
 ```bash
 docker-compose exec php bin/console doctrine:schema:update --force
 ```
-## You are all set!!!
 
-
-### Other commands:
-#### Generate the public and private keys used for signing JWT tokens (already add this in docker-entrypoint.sh file )
+### 4. Generate the public and private keys used for signing JWT tokens
 ```bash
 docker-compose exec php sh -c '
     set -e
@@ -34,6 +31,9 @@ docker-compose exec php sh -c '
     setfacl -dR -m u:www-data:rX -m u:"$(whoami)":rwX config/jwt
 '
 ```
+## You are all set!!!
+
+-----------
 
 ### Docker command
 Debug route:
