@@ -27,6 +27,7 @@ class Note
      *
      * @ORM\Column(type="text", length=50)
      * @Assert\NotBlank
+     * @Assert\Length(max="50")
      */
     public $title;
 
@@ -34,6 +35,7 @@ class Note
      * @var string The content of the note.
      *
      * @ORM\Column(type="text", length=1000)
+     * @Assert\Length(max="1000")
      */
     public $content;
 
@@ -51,8 +53,30 @@ class Note
      */
     public $createdAt;
 
+    /**
+     * @param \DateTime $created
+     */
+    public function setCreatedAt(\DateTime $created): void
+    {
+        $this->createdAt = $created;
+    }
+
+    /**
+     * @param \DateTime $updated
+     */
+    public function setUpdatedAt(\DateTime $updated): void
+    {
+        $this->updatedAt = $updated;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __construct()
+    {
+        $this->setCreatedAt(new \Datetime());
+        $this->setUpdatedAt(new \Datetime());
     }
 }

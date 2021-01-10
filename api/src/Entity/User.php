@@ -32,12 +32,28 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @var \DateTimeInterface When the note was updated.
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
+
+    /**
+     * @var \DateTimeInterface When the note was created.
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
      * User constructor.
      * @param $email
      */
     public function __construct($email)
     {
         $this->email = $email;
+        $this->setCreatedAt(new \Datetime());
+        $this->setUpdatedAt(new \Datetime());
     }
 
     /**
@@ -90,6 +106,37 @@ class User implements UserInterface
         $this->password = $password;
     }
 
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTimeInterface $created
+     */
+    public function setCreatedAt(\DateTimeInterface $created): void
+    {
+        $this->createdAt = $created;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getUpdatedAt(): \DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTimeInterface $updated
+     */
+    public function setUpdatedAt(\DateTimeInterface $updated): void
+    {
+        $this->updatedAt = $updated;
+    }
 
     /**
      * @return array|string[]

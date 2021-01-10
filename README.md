@@ -76,12 +76,17 @@ curl -X POST -H "Content-Type: application/json" https://localhost/register -d '
 
 You will get Error: password need at least 8 characters
 ```bash
-curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test3@test.com","password":"123456"}' -k
+curl -X POST -H "Content-Type: application/json" https://localhost/register -d '{"email":"test@note.com","password":"123456"}' -k
 ```
 
 Get token
 ```bash
-curl -X POST -H "Content-Type: application/json" https://localhost/authentication_token -d '{"username":"test@note.com","password":"123456"}' -k
+curl -X POST -H "Content-Type: application/json" https://localhost/authentication_token -d '{"username":"test@note.com","password":"12345678"}' -k
+```
+
+For example, The token for "test@note.com" is
+```
+eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2MTAzMDU0NTMsImV4cCI6MTYxMDMwOTA1Mywicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdEBub3RlLmNvbSJ9.UgC_RnJFAuOv3jRMIXaya7khsoxmTuFF-rffw1nj-k0XnlMv0O5nCukXdpQdZJdD-GRuY4jJrU3ZS_ZyrPr8TtLPQVfOFAS5mNQTk-aB9dcuNngSBgcJNeWW1H7WFEvqNGOXSid39_MVUuSoQTnUX8LsnWM5YEmILuKgZntXdJKyAxZl-gaRC58EL2RP-x51s4STBj17OBBMnKuBin-VccQLEA-w0chzPAfqV8nMbQ5LyjuMbWcHhMUZN7Uv9foUcVZMwrZyinHbRPDw54Eo8Z2eIU2fMjDiDUwQywKyae9U_crA8j9BJghBVlqiMRpSMKCWJf-rp0vFZNShXUM6s9IqC8WU4M6ci-EA9kK3C4MdQhyDakZtOzljH1UWA1Cdql-Qdlux-O08i1gmFumR41lJjZgTYmSEG69SvsBLulwS0xSglMaJSXbQW1YHx9mUlcl29WgbTf05WDDiXFtBdporr6X3T1rZVodVsAk9OkFb6A-85jtK7QpVJW5R1usa5FTjM-TKbqFs6f6kr-JjbO5rnKmGy8T2BGTQLusMXmodiNonlAqj-HmmsVFqWjKAhqq2bo-mzguIIDR84ompsvROG0Jyn_ipBZ8C6umv9Frwz2JWmvl1KUlEpCGWTEGj6WVEKrUGO0q7SKY5Zt77qK6NJlaZh-4vPhFW9EkS6Y4
 ```
 
 Use token to create note
